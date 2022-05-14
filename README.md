@@ -8,8 +8,10 @@
 
 ## Running
 
-1. `npm i`
-2. `npm run dev`
+1. Create an API-key at: https://api.trafikinfo.trafikverket.se/
+2. Create an `.env` file in root folder with key: `VITE_AUTH_KEY` and set the value to your API-key.
+3. `npm i`
+5. `npm run dev`
 
 ## Building
 
