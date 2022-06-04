@@ -30,7 +30,6 @@
       loading = false;
       trainAnnouncements = response;
     } catch (error) {
-      console.log(error);
       loading = false;
     }
   };
@@ -43,6 +42,7 @@
 </script>
 
 <main>
+  <h1>{locationToName[$departureLocation]} → {locationToName[arrivalLocation]}</h1>
   <ul>
     {#each filteredTrainAnnouncements as ta}
       <li>
@@ -84,7 +84,7 @@
             >
           </div>
           {#if ta.Deviation?.length}
-            <span>{ta.Deviation.map((d) => d.Description).join(", ")}</span>
+            <span class="card__deviation">{ta.Deviation.map((d) => d.Description).join(", ")}</span>
           {/if}
           {#if isMovingo(ta)}
             <span class="card__meta"> Movingo </span>
@@ -95,11 +95,13 @@
   </ul>
 </main>
 <footer>
-  <h1 on:click={toggleLocation}>
-    {locationToName[$departureLocation]} → {locationToName[arrivalLocation]}
-  </h1>
-  <button on:click={toggleMovingo} title="Toggle only Movingo">M</button>
-  <button on:click={onClick} disabled={loading} title="Reload">R</button>
+  <button on:click={toggleLocation} disabled={loading}>
+    Change direction
+  </button>
+  <div>
+    <button on:click={toggleMovingo}>{$onlyMovingo ? "Only Movingo" : "All trains"}</button>
+    <button on:click={onClick} disabled={loading}>Reload</button>
+  </div>
 </footer>
 
 <style global>
@@ -114,7 +116,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     line-height: 1.5;
-    color: rgba(0, 0, 0, 0.7);
+    color: #333;
   }
 
   body,
@@ -123,6 +125,7 @@
   ol {
     margin: 0;
     padding: 0;
+    list-style: none;
   }
 
   body,
@@ -131,13 +134,15 @@
     height: 100%;
   }
 
-  h1 {
-    font-size: 1.5rem;
-    cursor: pointer;
+  main {
+    padding: 0.5rem;
   }
 
-  main {
-    padding: 1rem 0.5rem;
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: 0.75rem;
   }
 
   footer {
@@ -145,45 +150,37 @@
     bottom: 0;
     width: 100%;
     padding: 0.5rem;
+    padding-bottom: 2.25rem;
     background-color: #fff;
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
-    align-items: center;
+    text-align: center;
     box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.1);
   }
 
-  ul {
-    list-style: none;
-    border: 1px solid lightgrey;
-    border-radius: 8px;
+  footer > * {
+    margin-bottom: 0.5rem;
   }
 
   button {
     padding: 1rem 2rem;
-    cursor: pointer;
-    background-color: #00af49;
+    background-color: #00AB3B;
+    border: none;
     color: white;
     font-weight: bold;
-    border: 1px solid #00af49;
-    border-radius: 2px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px -1px rgba(50,50,93,0.25),0 1px 3px -1px rgba(0,0,0,0.3);
+    cursor: pointer;
   }
 
-  li:last-child div {
-    border-bottom: 0;
+  .delayed, .departured, .card--canceled .card__time, .card--canceled .card__transport {
+    text-decoration: line-through;
   }
 
   .delayed {
     font-weight: normal;
-    text-decoration: line-through;
     padding: 2px;
     background-color: rgba(255, 255, 56, 1);
     border: 1px solid rgb(219, 219, 46);
     border-radius: 4px;
-  }
-
-  .departured {
-    text-decoration: line-through;
   }
 
   .card {
@@ -203,7 +200,6 @@
 
   .card--canceled {
     background-color: rgb(185, 0, 0);
-    text-decoration: line-through;
     color: white;
   }
 
@@ -225,5 +221,9 @@
     padding: 2px;
     color: darkgoldenrod;
     border-radius: 4px;
+  }
+
+  .card--canceled .card__meta {
+    color: white;
   }
 </style>
