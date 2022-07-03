@@ -4,6 +4,8 @@
   import { departureLocation, onlyMovingo } from "./store";
   import type { TrainAnnouncement } from "./TrainAnnouncement";
   import { locationToName } from "./Location";
+  import RefreshIcon from "./RefreshIcon.svelte";
+
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
   $: arrivalLocation = $departureLocation === "Cst" ? "U" : "Cst";
@@ -14,10 +16,6 @@
 
   const toggleLocation = () => {
     $departureLocation = $departureLocation === "Cst" ? "U" : "Cst";
-  };
-
-  const toggleMovingo = () => {
-    $onlyMovingo = !$onlyMovingo;
   };
 
   const fetcher = async ({ departureLocation, arrivalLocation }) => {
@@ -95,14 +93,17 @@
   </ul>
 </main>
 <footer>
-  <button on:click={toggleLocation} disabled={loading}>
-    Change direction
-  </button>
+  <label>
+    <input type="checkbox" bind:checked={$onlyMovingo} id="toggleMovingo" />
+    Movingo
+  </label>
   <div>
-    <button on:click={toggleMovingo}>{$onlyMovingo ? "Only Movingo" : "All trains"}</button>
-    <button on:click={onClick} disabled={loading}>Reload</button>
+    <button on:click={toggleLocation} disabled={loading}>
+      Change direction
+    </button>
+    <button on:click={onClick} disabled={loading} class="refresh"><RefreshIcon /></button>
   </div>
-</footer>
+  </footer>
 
 <style global>
   *,
@@ -132,6 +133,7 @@
   html,
   #app {
     height: 100%;
+    margin-bottom: 150px;
   }
 
   main {
@@ -146,14 +148,23 @@
   }
 
   footer {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     width: 100%;
+    height: 150px;
     padding: 0.5rem;
     padding-bottom: 2.25rem;
     background-color: #fff;
     text-align: center;
     box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer > div {
+    display: flex;
+    gap: 1rem;
   }
 
   footer > * {
@@ -169,6 +180,10 @@
     border-radius: 4px;
     box-shadow: 0 2px 5px -1px rgba(50,50,93,0.25),0 1px 3px -1px rgba(0,0,0,0.3);
     cursor: pointer;
+  }
+
+  .refresh {
+    padding: 0.8rem 1rem;
   }
 
   .delayed, .departured, .card--canceled .card__time, .card--canceled .card__transport {

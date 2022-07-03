@@ -14,7 +14,7 @@ export const fetchTrafikInfo = async ({
   const from = new Date();
   const to = new Date();
   from.setMinutes(nowInMinutes - 30);
-  to.setMinutes(nowInMinutes + 120);
+  to.setMinutes(nowInMinutes + 480);
   const result = await fetch(
     "https://api.trafikinfo.trafikverket.se/v2/data.json",
     {
