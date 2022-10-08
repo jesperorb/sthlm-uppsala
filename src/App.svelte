@@ -74,6 +74,12 @@
     arrivalLocation,
     fromTime,
   });
+
+  window.addEventListener("visibilitychange", () => {
+    if(document.visibilityState === "visible") {
+      fromTime = getFromTimeForDatePicker();
+    }
+  })
 </script>
 
 <main>
