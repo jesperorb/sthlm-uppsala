@@ -6,8 +6,27 @@
   import { locationToName } from "./Location";
   import RefreshIcon from "./RefreshIcon.svelte";
 
+  const getFromTime = (): Date => {
+    const nowInMinutes = new Date().getMinutes();
+    const from = new Date();
+    from.setMinutes(nowInMinutes - 30);
+    return from;
+  };
+
+  const getToTime = (date: string): Date => {
+    const to = new Date(date);
+    to.setMinutes(to.getMinutes() + 480);
+    return to;
+  };
+
+  const getFromTimeForDatePicker = () => {
+    const fromTime = getFromTime();
+    return `${fromTime.toLocaleDateString()}T${fromTime.toLocaleTimeString()}`;
+  };
+
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
+  let fromTime = getFromTimeForDatePicker();
   $: arrivalLocation = $departureLocation === "Cst" ? "U" : "Cst";
 
   $: filteredTrainAnnouncements = $onlyMovingo
@@ -18,12 +37,22 @@
     $departureLocation = $departureLocation === "Cst" ? "U" : "Cst";
   };
 
-  const fetcher = async ({ departureLocation, arrivalLocation }) => {
+  const fetcher = async ({
+    departureLocation,
+    arrivalLocation,
+    fromTime,
+  }: {
+    departureLocation: string;
+    arrivalLocation: string;
+    fromTime: string;
+  }) => {
     loading = true;
     try {
       const response = await fetchTrafikInfo({
         departureLocation: departureLocation,
         arrivalLocation,
+        fromTime: new Date(fromTime).toUTCString(),
+        toTime: getToTime(fromTime).toUTCString(),
       });
       loading = false;
       trainAnnouncements = response;
@@ -33,14 +62,37 @@
   };
 
   const onClick = () => {
-    fetcher({ departureLocation: $departureLocation, arrivalLocation });
+    fetcher({
+      departureLocation: $departureLocation,
+      arrivalLocation,
+      fromTime,
+    });
   };
 
-  $: fetcher({ departureLocation: $departureLocation, arrivalLocation });
+  $: fetcher({
+    departureLocation: $departureLocation,
+    arrivalLocation,
+    fromTime,
+  });
 </script>
 
 <main>
-  <h1>{locationToName[$departureLocation]} → {locationToName[arrivalLocation]}</h1>
+  {#if loading}
+    <div class="loading-wrapper">
+      <div class="loading">
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
+    </div>
+  {/if}
+  <h1>
+    {locationToName[$departureLocation]} → {locationToName[arrivalLocation]}
+  </h1>
+  <p style="text-align: center; margin-top: 0;">
+    {new Intl.DateTimeFormat().format(new Date(fromTime))}
+  </p>
   <ul>
     {#each filteredTrainAnnouncements as ta}
       <li>
@@ -82,7 +134,9 @@
             >
           </div>
           {#if ta.Deviation?.length}
-            <span class="card__deviation">{ta.Deviation.map((d) => d.Description).join(", ")}</span>
+            <span class="card__deviation"
+              >{ta.Deviation.map((d) => d.Description).join(", ")}</span
+            >
           {/if}
           {#if isMovingo(ta)}
             <span class="card__meta"> Movingo </span>
@@ -93,17 +147,26 @@
   </ul>
 </main>
 <footer>
-  <label>
-    <input type="checkbox" bind:checked={$onlyMovingo} id="toggleMovingo" />
-    Movingo
-  </label>
-  <div>
+  <div class="options">
+    <label>
+      <input type="checkbox" bind:checked={$onlyMovingo} id="toggleMovingo" />
+      Movingo
+    </label>
+    <label>
+      From
+      <input type="datetime-local" step="1" bind:value={fromTime} />
+    </label>
+  </div>
+  <div class="buttons">
     <button on:click={toggleLocation} disabled={loading}>
       Change direction
     </button>
-    <button on:click={onClick} disabled={loading} class="refresh"><RefreshIcon /></button>
+    <button on:click={onClick} disabled={loading} class="refresh">
+      <RefreshIcon />
+    </button
+    >
   </div>
-  </footer>
+</footer>
 
 <style global>
   *,
@@ -143,7 +206,7 @@
   h1 {
     font-size: 1.5rem;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     margin-top: 0.75rem;
   }
 
@@ -153,16 +216,23 @@
     width: 100%;
     height: 150px;
     padding: 0.5rem;
+    padding-top: 0.25rem;
     padding-bottom: 2.25rem;
     background-color: #fff;
-    text-align: center;
     box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  footer > div {
+  .options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .buttons {
     display: flex;
     gap: 1rem;
   }
@@ -172,21 +242,31 @@
   }
 
   button {
-    padding: 1rem 2rem;
-    background-color: #00AB3B;
+    padding: 1rem 1.5rem;
+    background-color: rgb(0, 171, 59);
     border: none;
     color: white;
-    font-weight: bold;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px -1px rgba(50,50,93,0.25),0 1px 3px -1px rgba(0,0,0,0.3);
+    font-weight: 700;
+    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
+
+  button:hover {
+    background-color: rgb(0, 157, 54);
   }
 
   .refresh {
     padding: 0.8rem 1rem;
   }
 
-  .delayed, .departured, .card--canceled .card__time, .card--canceled .card__transport {
+  .delayed,
+  .departured,
+  .card--canceled .card__time,
+  .card--canceled .card__transport {
     text-decoration: line-through;
   }
 
@@ -240,5 +320,47 @@
 
   .card--canceled .card__meta {
     color: white;
+  }
+
+  .loading-wrapper {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .loading {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .loading div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    margin: 4px;
+    border: 4px solid #333;
+    border-radius: 50%;
+    animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #333 transparent transparent transparent;
+  }
+  .loading div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .loading div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .loading div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes loading {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>

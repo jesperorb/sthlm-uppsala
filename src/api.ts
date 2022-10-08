@@ -3,18 +3,16 @@ import { TrainAnnouncement, trainAnnouncementModel } from "./TrainAnnouncement";
 type FetchTrafikInfoConfig = {
   departureLocation: string,
   arrivalLocation: string
+  fromTime: string;
+  toTime: string;
 }
 
 export const fetchTrafikInfo = async ({
   departureLocation,
-  arrivalLocation
+  arrivalLocation,
+  fromTime,
+  toTime,
 }: FetchTrafikInfoConfig) => {
-  const now = new Date();
-  const nowInMinutes = now.getMinutes();
-  const from = new Date();
-  const to = new Date();
-  from.setMinutes(nowInMinutes - 30);
-  to.setMinutes(nowInMinutes + 480);
   const result = await fetch(
     "https://api.trafikinfo.trafikverket.se/v2/data.json",
     {
@@ -27,8 +25,8 @@ export const fetchTrafikInfo = async ({
               <AND>
                 <EQ name='LocationSignature' value='${departureLocation}' />
                 <EQ name='ActivityType' value='Avgang' />
-                <GT name='AdvertisedTimeAtLocation' value='${from.toUTCString()}'/>
-                <LT name='AdvertisedTimeAtLocation' value='${to.toUTCString()}'/>
+                <GT name='AdvertisedTimeAtLocation' value='${fromTime}'/>
+                <LT name='AdvertisedTimeAtLocation' value='${toTime}'/>
               </AND>
             </FILTER>
             ${
