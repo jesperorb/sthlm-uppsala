@@ -1,6 +1,6 @@
 
 import { writable } from "svelte/store";
-import type { Locations } from "./Location";
+import type { Locations } from "../api/Location";
 
 const departureLocationKey = "departureLocation";
 

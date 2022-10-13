@@ -1,32 +1,21 @@
 <script lang="ts">
   import { fetchTrafikInfo } from "./api";
-  import { dateToHHMM, isMovingo, sortByDate } from "./util";
+  import {
+    getDefaultFromTimeForDatePicker,
+    getDefaultToTime,
+    isMovingo,
+    sortByDate,
+  } from "./utils";
   import { departureLocation, onlyMovingo } from "./store";
-  import type { TrainAnnouncement } from "./TrainAnnouncement";
-  import { locationToName } from "./Location";
-  import RefreshIcon from "./RefreshIcon.svelte";
-
-  const getFromTime = (): Date => {
-    const nowInMinutes = new Date().getMinutes();
-    const from = new Date();
-    from.setMinutes(nowInMinutes - 30);
-    return from;
-  };
-
-  const getToTime = (date: string): Date => {
-    const to = new Date(date);
-    to.setMinutes(to.getMinutes() + 480);
-    return to;
-  };
-
-  const getFromTimeForDatePicker = () => {
-    const fromTime = getFromTime();
-    return `${fromTime.toLocaleDateString()}T${fromTime.toLocaleTimeString()}`;
-  };
+  import type { TrainAnnouncement } from "./api/TrainAnnouncement";
+  import { locationToName } from "./api/Location";
+  import RefreshIcon from "./ui/RefreshIcon.svelte";
+  import LoadingIcon from "./ui/LoadingIcon.svelte";
+  import TrainCard from "./ui/TrainCard.svelte";
 
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
-  let fromTime = getFromTimeForDatePicker();
+  let fromTime = getDefaultFromTimeForDatePicker();
   $: arrivalLocation = $departureLocation === "Cst" ? "U" : "Cst";
 
   $: filteredTrainAnnouncements = $onlyMovingo
@@ -52,7 +41,7 @@
         departureLocation: departureLocation,
         arrivalLocation,
         fromTime: new Date(fromTime).toUTCString(),
-        toTime: getToTime(fromTime).toUTCString(),
+        toTime: getDefaultToTime().toUTCString(),
       });
       loading = false;
       trainAnnouncements = response;
@@ -76,79 +65,25 @@
   });
 
   window.addEventListener("visibilitychange", () => {
-    if(document.visibilityState === "visible") {
-      fromTime = getFromTimeForDatePicker();
+    if (document.visibilityState === "visible") {
+      fromTime = getDefaultFromTimeForDatePicker();
     }
-  })
+  });
 </script>
 
 <main>
   {#if loading}
-    <div class="loading-wrapper">
-      <div class="loading">
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-    </div>
+    <LoadingIcon />
   {/if}
   <h1>
     {locationToName[$departureLocation]} → {locationToName[arrivalLocation]}
   </h1>
-  <p style="text-align: center; margin-top: 0;">
+  <p class="date">
     {new Intl.DateTimeFormat().format(new Date(fromTime))}
   </p>
   <ul>
-    {#each filteredTrainAnnouncements as ta}
-      <li>
-        <div class="card" class:card--canceled={ta.Canceled}>
-          <div class="card__header">
-            <div class="card__time">
-              <strong
-                class:delayed={Boolean(ta.EstimatedTimeAtLocation)}
-                class:departured={Boolean(ta.TimeAtLocation)}
-              >
-                {dateToHHMM(ta.AdvertisedTimeAtLocation)}
-              </strong>
-              {#if ta.EstimatedTimeAtLocation}
-                <strong class:departured={Boolean(ta.TimeAtLocation)}>
-                  {dateToHHMM(ta.EstimatedTimeAtLocation)}
-                  {#if ta.EstimatedTimeIsPreliminary}
-                    <span class="card__preliminary"> Preliminary </span>
-                  {/if}
-                </strong>
-              {/if}
-            </div>
-            <div class="card__track">
-              {ta.TrackAtLocation} #
-            </div>
-          </div>
-          {#if ta.TimeAtLocation}
-            <strong>Departured: {dateToHHMM(ta.TimeAtLocation)}</strong>
-          {/if}
-          <div class="card__transport">
-            {ta.ProductInformation?.map((p) => p.Description).join("") ?? ""}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`https://trafikinfo.sj.se/sv/tag/${
-                ta.AdvertisedTrainIdent
-              }?date=${new Date(
-                ta.AdvertisedTimeAtLocation
-              ).toLocaleDateString()}`}>{ta.AdvertisedTrainIdent}</a
-            >
-          </div>
-          {#if ta.Deviation?.length}
-            <span class="card__deviation"
-              >{ta.Deviation.map((d) => d.Description).join(", ")}</span
-            >
-          {/if}
-          {#if isMovingo(ta)}
-            <span class="card__meta"> Movingo </span>
-          {/if}
-        </div>
-      </li>
+    {#each filteredTrainAnnouncements as trainAnnouncement}
+      <TrainCard {trainAnnouncement} />
     {/each}
   </ul>
 </main>
@@ -169,8 +104,7 @@
     </button>
     <button on:click={onClick} disabled={loading} class="refresh">
       <RefreshIcon />
-    </button
-    >
+    </button>
   </div>
 </footer>
 
@@ -206,14 +140,13 @@
   }
 
   main {
-    padding: 0.5rem;
+    padding: 0.5rem 0;
   }
 
   h1 {
     font-size: 1.5rem;
     text-align: center;
-    margin-bottom: 0;
-    margin-top: 0.75rem;
+    margin: 0;
   }
 
   footer {
@@ -268,105 +201,8 @@
   .refresh {
     padding: 0.8rem 1rem;
   }
-
-  .delayed,
-  .departured,
-  .card--canceled .card__time,
-  .card--canceled .card__transport {
-    text-decoration: line-through;
-  }
-
-  .delayed {
-    font-weight: normal;
-    padding: 2px;
-    background-color: rgba(255, 255, 56, 1);
-    border: 1px solid rgb(219, 219, 46);
-    border-radius: 4px;
-  }
-
-  .card {
-    padding: 1rem;
-    position: relative;
-    border-bottom: 1px solid lightgrey;
-  }
-
-  .card__header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .card__track {
-    font-weight: bold;
-  }
-
-  .card--canceled {
-    background-color: rgb(185, 0, 0);
-    color: white;
-  }
-
-  .card__meta {
-    position: absolute;
-    bottom: 0.5rem;
-    right: 0.5rem;
-    font-size: 0.75rem;
-    font-style: italic;
-    color: rgba(0, 0, 0, 0.5);
-  }
-
-  .card__transport {
-    font-style: italic;
-  }
-
-  .card__preliminary {
-    font-weight: normal;
-    padding: 2px;
-    color: darkgoldenrod;
-    border-radius: 4px;
-  }
-
-  .card--canceled .card__meta {
-    color: white;
-  }
-
-  .loading-wrapper {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-  }
-
-  .loading {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  .loading div {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    width: 34px;
-    height: 34px;
-    margin: 4px;
-    border: 4px solid #333;
-    border-radius: 50%;
-    animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #333 transparent transparent transparent;
-  }
-  .loading div:nth-child(1) {
-    animation-delay: -0.45s;
-  }
-  .loading div:nth-child(2) {
-    animation-delay: -0.3s;
-  }
-  .loading div:nth-child(3) {
-    animation-delay: -0.15s;
-  }
-  @keyframes loading {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  .date {
+    text-align: center;
+    margin-top: 0;
   }
 </style>

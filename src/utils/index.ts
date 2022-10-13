@@ -1,4 +1,4 @@
-import type { TrainAnnouncement } from "./TrainAnnouncement"
+import type { TrainAnnouncement } from "../api/TrainAnnouncement"
 
 export const dateToHHMM = (date: string) => {
   return new Date(date).toLocaleString([], {
@@ -20,3 +20,19 @@ export const isMovingo = (trainAnnouncement: TrainAnnouncement) => {
     p.Description === "Movingo gäller."
   )
 }
+
+export const getDefaultFromTime = (): Date => {
+  const nowInMinutes = new Date().getMinutes();
+  const from = new Date();
+  from.setMinutes(nowInMinutes - 30);
+  return from;
+};
+
+export const getDefaultFromTimeForDatePicker = () => {
+  const fromTime = getDefaultFromTime();
+  return `${fromTime.toLocaleDateString()}T${fromTime.toLocaleTimeString()}`;
+};
+
+export const getDefaultToTime = (): Date => {
+  return new Date(new Date().setHours(23, 59, 59, 999))
+};
