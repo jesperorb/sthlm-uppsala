@@ -33,6 +33,6 @@ export const getDefaultFromTimeForDatePicker = () => {
   return `${fromTime.toLocaleDateString()}T${fromTime.toLocaleTimeString()}`;
 };
 
-export const getDefaultToTime = (): Date => {
-  return new Date(new Date().setHours(23, 59, 59, 999))
+export const getDefaultToTime = (fromTime: string): Date => {
+  return new Date(new Date(fromTime).setHours(23, 59, 59, 999))
 };

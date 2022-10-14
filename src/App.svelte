@@ -41,7 +41,7 @@
         departureLocation: departureLocation,
         arrivalLocation,
         fromTime: new Date(fromTime).toUTCString(),
-        toTime: getDefaultToTime().toUTCString(),
+        toTime: getDefaultToTime(fromTime).toUTCString(),
       });
       loading = false;
       trainAnnouncements = response;
