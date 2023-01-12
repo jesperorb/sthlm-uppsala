@@ -9,7 +9,9 @@
   import { departureLocation, onlyMovingo } from "./store";
   import type { TrainAnnouncement } from "./api/TrainAnnouncement";
   import { locationToName } from "./api/Location";
+  import MovingoIcon from "./ui/MovingoIcon.svelte";
   import RefreshIcon from "./ui/RefreshIcon.svelte";
+  import ChangeDirectionIcon from "./ui/ChangeDirectionIcon.svelte";
   import LoadingIcon from "./ui/LoadingIcon.svelte";
   import TrainCard from "./ui/TrainCard.svelte";
 
@@ -21,6 +23,10 @@
   $: filteredTrainAnnouncements = $onlyMovingo
     ? sortByDate(trainAnnouncements.filter(isMovingo))
     : sortByDate(trainAnnouncements);
+
+  const toggleMovingo = () => {
+    $onlyMovingo = !($onlyMovingo);
+  };
 
   const toggleLocation = () => {
     $departureLocation = $departureLocation === "Cst" ? "U" : "Cst";
@@ -89,20 +95,26 @@
 </main>
 <footer>
   <div class="options">
-    <label>
+    <label class="big-only">
       <input type="checkbox" bind:checked={$onlyMovingo} id="toggleMovingo" />
       Movingo
     </label>
     <label>
-      From
+      <span class="big-only">From</span>
       <input type="datetime-local" step="1" bind:value={fromTime} />
     </label>
   </div>
   <div class="buttons">
-    <button on:click={toggleLocation} disabled={loading}>
+    <button on:click={toggleLocation} disabled={loading} class="big-only">
       Change direction
     </button>
-    <button on:click={onClick} disabled={loading} class="refresh">
+    <button on:click={toggleLocation} disabled={loading} class="icon smol-only">
+      <ChangeDirectionIcon />
+    </button>
+    <button on:click={toggleMovingo} disabled={loading} class="icon smol-only" class:depressed={$onlyMovingo}>
+      <MovingoIcon />
+    </button>
+    <button on:click={onClick} disabled={loading} class="icon">
       <RefreshIcon />
     </button>
   </div>
@@ -180,6 +192,10 @@
     margin-bottom: 0.5rem;
   }
 
+  button.depressed {
+    background-color: rgb(3, 58, 18);
+  }
+
   button {
     padding: 1rem 1.5rem;
     background-color: rgb(0, 171, 59);
@@ -198,15 +214,21 @@
     background-color: rgb(0, 157, 54);
   }
 
-  .refresh {
+  button.icon {
     padding: 0.8rem 1rem;
   }
+
   .date {
     text-align: center;
     margin-top: 0;
   }
 
   /* some phones are smaller than others */
+
+  .smol-only {
+    display: none;
+  }
+
   @media only screen and (max-width: 320px), only screen and (max-height: 320px) {
     main {
       padding: 0.25rem;
@@ -218,12 +240,21 @@
       font-size: 0.75rem;
       margin: 0;
     }
+    .smol-only {
+      display: initial;
+    }
+    .big-only {
+      display: none;
+    }
     footer {
       padding: 0.25rem;
       height: 60px;
     }
     .buttons {
       gap: 0.5rem;
+    }
+    button.icon {
+      padding: 0.25rem 0.5rem;
     }
   }
 </style>
