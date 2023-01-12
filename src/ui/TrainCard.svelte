@@ -122,4 +122,11 @@
   .card--canceled .card__meta {
     color: white;
   }
+
+  /* some phones are smaller than others */
+  @media only screen and (max-width: 320px), only screen and (max-height: 320px) {
+    .card {
+      padding: 0.25rem;
+    }
+  }
 </style>

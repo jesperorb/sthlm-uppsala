@@ -205,4 +205,25 @@
     text-align: center;
     margin-top: 0;
   }
+
+  /* some phones are smaller than others */
+  @media only screen and (max-width: 320px), only screen and (max-height: 320px) {
+    main {
+      padding: 0.25rem;
+    }
+    h1 {
+      font-size: 1.25rem;
+    }
+    .date {
+      font-size: 0.75rem;
+      margin: 0;
+    }
+    footer {
+      padding: 0.25rem;
+      height: 60px;
+    }
+    .buttons {
+      gap: 0.5rem;
+    }
+  }
 </style>
