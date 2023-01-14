@@ -108,10 +108,10 @@
     <button on:click={toggleLocation} disabled={loading} class="big-only">
       Change direction
     </button>
-    <button on:click={toggleLocation} disabled={loading} class="icon smol-only">
+    <button on:click={toggleLocation} disabled={loading} class="icon small-only">
       <ChangeDirectionIcon />
     </button>
-    <button on:click={toggleMovingo} disabled={loading} class="icon smol-only" class:depressed={$onlyMovingo}>
+    <button on:click={toggleMovingo} disabled={loading} class="icon small-only" class:toggled-on={$onlyMovingo}>
       <MovingoIcon />
     </button>
     <button on:click={onClick} disabled={loading} class="icon">
@@ -192,7 +192,7 @@
     margin-bottom: 0.5rem;
   }
 
-  button.depressed {
+  button.toggled-on {
     background-color: rgb(3, 58, 18);
   }
 
@@ -223,9 +223,7 @@
     margin-top: 0;
   }
 
-  /* some phones are smaller than others */
-
-  .smol-only {
+  .small-only {
     display: none;
   }
 
@@ -240,7 +238,7 @@
       font-size: 0.75rem;
       margin: 0;
     }
-    .smol-only {
+    .small-only {
       display: initial;
     }
     .big-only {
