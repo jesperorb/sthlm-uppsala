@@ -100,7 +100,7 @@
       Movingo
     </label>
     <label>
-      <span class="big-only">From</span>
+      <span class="big-or-sr">From</span>
       <input type="datetime-local" step="1" bind:value={fromTime} />
     </label>
   </div>
@@ -243,6 +243,14 @@
     }
     .big-only {
       display: none;
+    }
+    .big-or-sr {
+      position:absolute;
+      left:-10000px;
+      top:auto;
+      width:1px;
+      height:1px;
+      overflow:hidden;
     }
     footer {
       padding: 0.25rem;
