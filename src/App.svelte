@@ -10,6 +10,7 @@
   import type { TrainAnnouncement } from "./api/TrainAnnouncement";
   import { locationToName } from "./api/Location";
   import MovingoIcon from "./ui/MovingoIcon.svelte";
+  import NoMovingoIcon from "./ui/NoMovingoIcon.svelte";
   import RefreshIcon from "./ui/RefreshIcon.svelte";
   import ChangeDirectionIcon from "./ui/ChangeDirectionIcon.svelte";
   import LoadingIcon from "./ui/LoadingIcon.svelte";
@@ -111,8 +112,12 @@
     <button on:click={toggleLocation} disabled={loading} class="icon small-only">
       <ChangeDirectionIcon />
     </button>
-    <button on:click={toggleMovingo} disabled={loading} class="icon small-only" class:toggled-on={$onlyMovingo}>
-      <MovingoIcon />
+    <button on:click={toggleMovingo} disabled={loading} class="icon small-only" class:toggled-off={!$onlyMovingo}>
+      {#if $onlyMovingo}
+        <MovingoIcon />
+      {:else}
+        <NoMovingoIcon />
+      {/if}
     </button>
     <button on:click={onClick} disabled={loading} class="icon">
       <RefreshIcon />
@@ -192,8 +197,8 @@
     margin-bottom: 0.5rem;
   }
 
-  button.toggled-on {
-    background-color: rgb(3, 58, 18);
+  button.toggled-off {
+    background-color: rgb(112, 199, 134);
   }
 
   button {
