@@ -1,3 +1,4 @@
+import { isApplicableDeparture } from "../utils";
 import { TrainAnnouncement, trainAnnouncementModel } from "./TrainAnnouncement";
 
 type FetchTrafikInfoConfig = {
@@ -44,10 +45,5 @@ export const fetchTrafikInfo = async ({
   )
   const { RESPONSE } = await result.json();
   const announcements = RESPONSE.RESULT[0].TrainAnnouncement as TrainAnnouncement[];
-  return announcements
-    .filter(ta => ta.Advertised && (
-      ta.ToLocation?.some(tl => tl.LocationName === arrivalLocation)
-      || ta.ViaToLocation?.some(vtl => vtl.LocationName === arrivalLocation)
-      // :shrug:
-    ) && !ta.ProductInformation?.some(pi => pi.Description === "Museitåg"))
+  return announcements.filter(isApplicableDeparture(arrivalLocation))
 }
