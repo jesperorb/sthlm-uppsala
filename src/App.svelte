@@ -73,7 +73,7 @@
 
   window.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
-      fromTime = getDefaultFromTimeForDatePicker();
+      // fromTime = getDefaultFromTimeForDatePicker();
     }
   });
 </script>
