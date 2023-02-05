@@ -36,33 +36,3 @@ export const getDefaultFromTimeForDatePicker = () => {
 export const getDefaultToTime = (fromTime: string): Date => {
   return new Date(new Date(fromTime).setHours(23, 59, 59, 999))
 };
-
-const isAdvertised = (
-  trainAnnouncement: TrainAnnouncement
-) => trainAnnouncement.Advertised
-
-const isMuseumTrain = (
-  trainAnnouncement: TrainAnnouncement
-) => trainAnnouncement.ProductInformation
-  ?.some(pi => pi.Description === "Museitåg")
-
-const hasChoosenArrivalLocation = (
-  arrivalLocation: string
-) => (
-  trainAnnouncement: TrainAnnouncement
-) => trainAnnouncement.ToLocation?.some(tl => tl.LocationName === arrivalLocation)
-  || trainAnnouncement.ViaToLocation?.some(vtl => vtl.LocationName === arrivalLocation)
-
-const isManuallyAddedDepartureWithMissingInfo = (
-  trainAnnouncement: TrainAnnouncement
-) => ["919", "929", "17"].includes(trainAnnouncement.AdvertisedTrainIdent)
-
-export const isApplicableDeparture = (arrivalLocation: string) => (
-  trainAnnouncement: TrainAnnouncement
-) => {
-  return (
-    isAdvertised(trainAnnouncement) &&
-    !isMuseumTrain(trainAnnouncement) &&
-    hasChoosenArrivalLocation(arrivalLocation)(trainAnnouncement)
-  ) || isManuallyAddedDepartureWithMissingInfo(trainAnnouncement)
-}
