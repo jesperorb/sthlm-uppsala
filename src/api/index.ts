@@ -72,11 +72,11 @@ const fetchAnnouncements = async (andFilters: string[]): Promise<TrainAnnounceme
                 ${andFilters.join('')}
               </AND>
             </FILTER>
-            ${Object.keys(trainAnnouncementModel)
-          .map(key => `<INCLUDE>${key}</INCLUDE>`)
-          .join("\n")
-        }
-
+            ${
+              Object.keys(trainAnnouncementModel)
+                .map(key => `<INCLUDE>${key}</INCLUDE>`)
+                .join("\n")
+            }
           </QUERY>
         </REQUEST>
       `,
