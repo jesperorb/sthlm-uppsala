@@ -8,6 +8,7 @@ export type TrainAnnouncement = {
   AdvertisedTimeAtLocation: string;
   EstimatedTimeAtLocation?: string;
   AdvertisedTrainIdent: string;
+  TechnicalTrainIdent: string;
   ProductInformation?: MetaInformation[];
   Canceled: boolean;
   ModifiedTime: string;
@@ -31,6 +32,7 @@ export const trainAnnouncementModel: Required<TrainAnnouncement> = {
   AdvertisedTimeAtLocation: "2022-05-14T07:37:00.000+02:00",
   EstimatedTimeAtLocation: "2022-05-14T07:37:00.000+02:00",
   AdvertisedTrainIdent: "",
+  TechnicalTrainIdent: "",
   ProductInformation: [],
   Canceled: false,
   ModifiedTime: "2022-05-14T07:37:00.000+02:00",
