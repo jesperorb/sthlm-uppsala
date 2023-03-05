@@ -1,3 +1,4 @@
+import type { ApiResponse } from "./ApiResponse";
 import type { TrainAnnouncement } from "./TrainAnnouncement";
 import { trainAnnouncementIncludeKeys } from "./trainAnnouncementModel";
 
@@ -84,9 +85,8 @@ const fetchAnnouncements = async (andFilters: string[]): Promise<TrainAnnounceme
     }
   );
 
-  const { RESPONSE } = await result.json();
-  const trainAnnouncements = RESPONSE.RESULT[0].TrainAnnouncement;
-  return trainAnnouncements;
+  const response = await result.json() as ApiResponse;
+  return response.RESPONSE.RESULT[0].TrainAnnouncement;
 }
 
 export const fetchTrafikInfo = async ({

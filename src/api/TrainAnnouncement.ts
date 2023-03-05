@@ -1,9 +1,9 @@
 export type TrainAnnouncement = {
   LocationSignature: string;
   FromLocation: Location[];
-  ViaFromLocation: Location[];
+  ViaFromLocation?: Location[];
   ToLocation: Location[];
-  ViaToLocation: Location[];
+  ViaToLocation?: Location[];
   TimeAtLocation?: string;
   AdvertisedTimeAtLocation: string;
   EstimatedTimeAtLocation?: string;
