@@ -21,24 +21,3 @@ export type TrainAnnouncement = {
 
 export type Location = { LocationName: string; Priority: number, Order: number; }
 export type MetaInformation = { Code: string; Description: string; };
-
-export const trainAnnouncementModel: Required<TrainAnnouncement> = {
-  LocationSignature: "",
-  FromLocation: [],
-  ViaFromLocation: [],
-  ToLocation: [],
-  ViaToLocation: [],
-  TimeAtLocation: "2022-05-14T07:37:00.000+02:00",
-  AdvertisedTimeAtLocation: "2022-05-14T07:37:00.000+02:00",
-  EstimatedTimeAtLocation: "2022-05-14T07:37:00.000+02:00",
-  AdvertisedTrainIdent: "",
-  TechnicalTrainIdent: "",
-  ProductInformation: [],
-  Canceled: false,
-  ModifiedTime: "2022-05-14T07:37:00.000+02:00",
-  Advertised: true,
-  EstimatedTimeIsPreliminary: false,
-  TrackAtLocation: "",
-  Deviation: [],
-  OtherInformation: []
-}

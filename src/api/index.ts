@@ -1,4 +1,5 @@
-import { TrainAnnouncement, trainAnnouncementModel } from "./TrainAnnouncement";
+import type { TrainAnnouncement } from "./TrainAnnouncement";
+import { trainAnnouncementIncludeKeys } from "./trainAnnouncementModel";
 
 type FetchTrafikInfoConfig = {
   departureLocation: string,
@@ -72,11 +73,7 @@ const fetchAnnouncements = async (andFilters: string[]): Promise<TrainAnnounceme
                 ${andFilters.join('')}
               </AND>
             </FILTER>
-            ${
-              Object.keys(trainAnnouncementModel)
-                .map(key => `<INCLUDE>${key}</INCLUDE>`)
-                .join("\n")
-            }
+            ${trainAnnouncementIncludeKeys}
           </QUERY>
         </REQUEST>
       `,
