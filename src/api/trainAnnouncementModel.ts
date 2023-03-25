@@ -10,7 +10,7 @@ export const trainAnnouncementModel: Required<TrainAnnouncement> = {
   AdvertisedTimeAtLocation: "2022-05-14T07:37:00.000+02:00",
   EstimatedTimeAtLocation: "2022-05-14T07:37:00.000+02:00",
   AdvertisedTrainIdent: "",
-  TechnicalTrainIdent: "",
+  OperationalTrainNumber: "",
   ProductInformation: [],
   Canceled: false,
   ModifiedTime: "2022-05-14T07:37:00.000+02:00",

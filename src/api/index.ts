@@ -68,7 +68,7 @@ const fetchAnnouncements = async (andFilters: string[]): Promise<TrainAnnounceme
       body: `
         <REQUEST>
           <LOGIN authenticationkey='${import.meta.env.VITE_AUTH_KEY}' />
-          <QUERY objecttype='TrainAnnouncement' schemaversion='1.6'>
+          <QUERY objecttype='TrainAnnouncement' schemaversion='1.8'>
             <FILTER>
               <AND>
                 ${andFilters.join('')}

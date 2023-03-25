@@ -17,7 +17,7 @@ export const sortByDate = (trainAnnouncements: TrainAnnouncement[]) => {
 
 export const isMovingo = (trainAnnouncement: TrainAnnouncement) => {
   return trainAnnouncement.OtherInformation?.some((p) =>
-    p.Description === "Movingo gäller."
+    p.Description !== "Endast SJ-biljetter gäller."
   )
 }
 
