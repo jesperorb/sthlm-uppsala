@@ -12,7 +12,7 @@ departureLocation.subscribe((value) => localStorage.setItem(departureLocationKey
 
 const onlyMovingoKey = "onlyMovingo";
 
-const storedOnlyMovingo = localStorage.getItem(onlyMovingoKey) ?? "true";
+const storedOnlyMovingo = localStorage.getItem(onlyMovingoKey) ?? "false";
 
 export const onlyMovingo = writable<boolean>(storedOnlyMovingo === "true" ? true : false);
 
