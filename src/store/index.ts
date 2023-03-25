@@ -17,3 +17,11 @@ const storedOnlyMovingo = localStorage.getItem(onlyMovingoKey) ?? "true";
 export const onlyMovingo = writable<boolean>(storedOnlyMovingo === "true" ? true : false);
 
 onlyMovingo.subscribe((value) => localStorage.setItem(onlyMovingoKey, value.toString()));
+
+const layoutKey = "layout";
+
+const storedLayout = localStorage.getItem(layoutKey) ?? "normal";
+
+export const layout = writable<string>(storedLayout);
+
+layout.subscribe((value) => localStorage.setItem(layoutKey, value));

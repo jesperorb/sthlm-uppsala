@@ -11,8 +11,8 @@
 
 .loading-wrapper {
     position: fixed;
-    top: 1rem;
-    left: 1rem;
+    top: 0.25rem;
+    left: 0.25rem;
   }
 
   .loading {

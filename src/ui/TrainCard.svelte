@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { layout } from "../store";
   import type { TrainAnnouncement } from "../api/TrainAnnouncement";
   import { dateToHHMM, isMovingo } from "../utils";
   export let trainAnnouncement: TrainAnnouncement;
 </script>
 
 <li>
-  <div class="card" class:card--canceled={trainAnnouncement.Canceled}>
+  <div class="card card--{$layout}" class:card--canceled={trainAnnouncement.Canceled}>
     <div class="card__header">
       <div class="card__time">
         <strong
@@ -75,6 +76,10 @@
     border-bottom: 1px solid rgb(240, 230, 240);
   }
 
+  .card--dense {
+    padding: 0.25rem;
+  }
+
   a {
     color: #333;
     text-decoration: none;
@@ -121,11 +126,5 @@
 
   .card--canceled .card__meta {
     color: white;
-  }
-
-  @media only screen and (max-width: 320px), only screen and (max-height: 320px) {
-    .card {
-      padding: 0.25rem;
-    }
   }
 </style>
