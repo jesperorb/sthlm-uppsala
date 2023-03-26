@@ -25,23 +25,17 @@
       on:click={toggleShowOptions}
       aria-label="Settings"
     >
-      <span aria-hidden>
-        <SettingsIcon />
-      </span>
+      <SettingsIcon />
     </button>
     <button
       on:click={toggleLocation}
       disabled={loading}
       aria-label="Change direction"
     >
-      <span aria-hidden>
         <ChangeDirectionIcon />
-      </span>
     </button>
     <button on:click={refresh} disabled={loading} aria-label="Refresh">
-      <span aria-hidden>
-        <RefreshIcon />
-      </span>
+      <RefreshIcon />
     </button>
   </div>
   <div class="settings" class:settings--open={showOptions}>

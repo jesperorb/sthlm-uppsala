@@ -18,7 +18,10 @@ export const trainAnnouncementModel: Required<TrainAnnouncement> = {
   EstimatedTimeIsPreliminary: false,
   TrackAtLocation: "",
   Deviation: [],
-  OtherInformation: []
+  OtherInformation: [],
+  Booking: [],
+  Service: [],
+  TrainComposition: [],
 }
 
 export const trainAnnouncementIncludeKeys =

@@ -13,10 +13,13 @@ export type TrainAnnouncement = {
   Canceled: boolean;
   ModifiedTime: string;
   Advertised: boolean;
+  Service: MetaInformation[];
+  Booking: MetaInformation[]
   EstimatedTimeIsPreliminary?: boolean;
   TrackAtLocation: string;
   Deviation?: MetaInformation[];
   OtherInformation?: MetaInformation[];
+  TrainComposition: MetaInformation[]
 }
 
 export type Location = { LocationName: string; Priority: number, Order: number; }

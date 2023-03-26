@@ -6,16 +6,19 @@
     isMovingo,
     sortByDate,
   } from "./utils";
-  import { departureLocation, layout, onlyMovingo } from "./store";
+  import { departureLocation, onlyMovingo } from "./store";
   import type { TrainAnnouncement } from "./api/TrainAnnouncement";
   import LoadingIcon from "./ui/LoadingIcon.svelte";
   import TrainCard from "./ui/TrainCard.svelte";
   import Options from "./ui/Options.svelte";
   import Header from "./ui/Header.svelte";
+  import Dialog from "./ui/Dialog.svelte";
 
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
   let fromTime = getDefaultFromTimeForDatePicker();
+  let showModal = false;
+  let selectedTrainAnnouncement: TrainAnnouncement | null = null;
   $: arrivalLocation = $departureLocation === "Cst" ? "U" : "Cst";
 
   $: filteredTrainAnnouncements = $onlyMovingo
@@ -54,6 +57,15 @@
     });
   };
 
+  const openDetails = (ta: TrainAnnouncement) => {
+    if (showModal) {
+      selectedTrainAnnouncement = null;
+    } else {
+      selectedTrainAnnouncement = ta;
+    }
+    showModal = !showModal;
+  };
+
   $: fetcher({
     departureLocation: $departureLocation,
     arrivalLocation,
@@ -78,11 +90,34 @@
   />
   <ul>
     {#each filteredTrainAnnouncements as trainAnnouncement}
-      <TrainCard {trainAnnouncement} />
+      <TrainCard {trainAnnouncement} {openDetails} />
     {/each}
   </ul>
 </main>
 <Options {loading} {refresh} {fromTime} />
+<Dialog bind:showModal>
+	<h2 slot="header">
+	</h2>
+  {#if selectedTrainAnnouncement}
+    <div>
+      <p>
+        {selectedTrainAnnouncement.OtherInformation?.map((p) => p.Description).join("") ?? ""}
+      </p>
+      <p>
+        {selectedTrainAnnouncement.Deviation?.map((p) => p.Description).join("") ?? ""}
+      </p>
+      <p>
+        {selectedTrainAnnouncement.Booking?.map((p) => p.Description).join("") ?? ""}
+      </p>
+      <p>
+        {selectedTrainAnnouncement.Service?.map((p) => p.Description).join("") ?? ""}
+      </p>
+      <p>
+        {selectedTrainAnnouncement.TrainComposition?.map((p) => p.Description).join("") ?? ""}
+      </p>
+    </div>
+  {/if}
+</Dialog>
 
 <style global>
   :root {

@@ -1,8 +1,10 @@
 <script lang="ts">
   import { layout } from "../store";
   import type { TrainAnnouncement } from "../api/TrainAnnouncement";
-  import { dateToHHMM, isMovingo } from "../utils";
+  import { dateToHHMM } from "../utils";
+  import InfoIcon from "./InfoIcon.svelte";
   export let trainAnnouncement: TrainAnnouncement;
+  export let openDetails: (ta: TrainAnnouncement) => void;
 </script>
 
 <li>
@@ -32,7 +34,7 @@
       <strong>Departured: {dateToHHMM(trainAnnouncement.TimeAtLocation)}</strong>
     {/if}
     <div class="card__transport">
-      {trainAnnouncement.ProductInformation?.map((p) => p.Description).join("") ?? ""}
+      {trainAnnouncement.ProductInformation?.map((p) => p.Description).join(" ") ?? ""}
       <a
         target="_blank"
         rel="noopener noreferrer"
@@ -42,14 +44,17 @@
           trainAnnouncement.AdvertisedTimeAtLocation
         ).toLocaleDateString()}`}>{trainAnnouncement.AdvertisedTrainIdent}</a
       >
+      <button
+        on:click={() => openDetails(trainAnnouncement)}
+        aria-label="Show details"
+      >
+        <InfoIcon />
+      </button>
     </div>
     {#if trainAnnouncement.Deviation?.length}
       <span class="card__deviation"
-        >{trainAnnouncement.Deviation.map((d) => d.Description).join(", ")}</span
+        >{trainAnnouncement.Deviation.filter((d) => d.Description !== "Ej servering").map((d) => d.Description).join(", ")}</span
       >
-    {/if}
-    {#if isMovingo(trainAnnouncement)}
-      <span class="card__meta"> Movingo </span>
     {/if}
   </div>
 </li>
@@ -86,6 +91,16 @@
     border-bottom: 1px solid #333;
   }
 
+  button {
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    margin-left: auto;
+    background-color: transparent;
+    color: #888;
+    padding: 0;
+  }
+
   li:nth-child(odd) {
     background-color: rgb(250, 250, 250);
   }
@@ -115,6 +130,9 @@
 
   .card__transport {
     font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem
   }
 
   .card__preliminary {
@@ -124,7 +142,4 @@
     border-radius: 4px;
   }
 
-  .card--canceled .card__meta {
-    color: white;
-  }
 </style>
