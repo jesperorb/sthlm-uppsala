@@ -2,9 +2,21 @@
 
 **[Live site](https://sthlm-uppsala.vercel.app/)**
 
-> Displays traffic info for trains between Stockholm and Uppsala. Possible to filter by Movingo. Quick toggle to switch departure location and a reload button for quick updates.
+> Displays traffic info for trains between Stockholm and Uppsala.
 
-![firefox_yw5lXd02JU](https://user-images.githubusercontent.com/21122051/177034639-dbe136e0-9fc6-44e1-a224-69773b738f72.png)
+## Features
+
+- Easy to access refresh button
+- Easy to access "Change direction" button
+- Toggle to show only departures where Movingo can be used
+- Two layout modes: "normal" and "dense" (less padding)
+- Possible to select custom date and time for when to show departures
+- Link train directly to https://trafikinfo.sj.se/sv
+- Dialog for extra info
+
+## Screenshot
+
+<img width="357" alt="Screenshot 2023-03-26 at 15 18 59" src="https://user-images.githubusercontent.com/21122051/227778343-b30070d1-cd45-497f-9c65-c26b281c9f5d.png">
 
 ## Running
 
