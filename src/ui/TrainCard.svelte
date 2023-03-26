@@ -1,7 +1,7 @@
 <script lang="ts">
   import { layout } from "../store";
   import type { TrainAnnouncement } from "../api/TrainAnnouncement";
-  import { dateToHHMM } from "../utils";
+  import { dateToHHMM, filterDeviations } from "../utils";
   import InfoIcon from "./InfoIcon.svelte";
   export let trainAnnouncement: TrainAnnouncement;
   export let openDetails: (ta: TrainAnnouncement) => void;
@@ -53,7 +53,7 @@
     </div>
     {#if trainAnnouncement.Deviation?.length}
       <span class="card__deviation"
-        >{trainAnnouncement.Deviation.filter((d) => d.Description !== "Ej servering").map((d) => d.Description).join(", ")}</span
+        >{filterDeviations(trainAnnouncement.Deviation).map((d) => d.Description).join(", ")}</span
       >
     {/if}
   </div>
