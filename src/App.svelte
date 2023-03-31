@@ -94,7 +94,7 @@
     {/each}
   </ul>
 </main>
-<Options {loading} {refresh} {fromTime} />
+<Options {loading} {refresh} bind:fromTime={fromTime} />
 <Dialog bind:showModal>
 	<h2 slot="header">
 	</h2>
