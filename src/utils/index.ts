@@ -42,5 +42,7 @@ export const getDefaultFromTimeForDatePicker = () => {
 };
 
 export const getDefaultToTime = (fromTime: string): Date => {
-  return new Date(new Date(fromTime).setHours(23, 59, 59, 999))
+  const endOfDay = new Date(new Date(fromTime).setHours(23, 59, 59, 999));
+  endOfDay.setHours(endOfDay.getHours() + 3);
+  return endOfDay;
 };
