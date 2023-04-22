@@ -81,6 +81,8 @@
 
   button {
     user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
     border: none;
     padding: 1rem 1.5rem;
     color: #fff;
