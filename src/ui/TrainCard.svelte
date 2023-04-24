@@ -1,7 +1,7 @@
 <script lang="ts">
   import { layout } from "../store";
   import type { TrainAnnouncement } from "../api/TrainAnnouncement";
-  import { dateToHHMM, filterDeviations } from "../utils";
+  import { dateToHHMM, filterDeviations, hasExtraInfo } from "../utils";
   import InfoIcon from "./InfoIcon.svelte";
   export let trainAnnouncement: TrainAnnouncement;
   export let openDetails: (ta: TrainAnnouncement) => void;
@@ -14,9 +14,13 @@
         <strong
           class:delayed={Boolean(trainAnnouncement.EstimatedTimeAtLocation)}
           class:departured={Boolean(trainAnnouncement.TimeAtLocation)}
+          aria-hidden={Boolean(trainAnnouncement.TimeAtLocation)}
         >
           {dateToHHMM(trainAnnouncement.AdvertisedTimeAtLocation)}
         </strong>
+        {#if trainAnnouncement.TimeAtLocation}
+          <strong>dep. {dateToHHMM(trainAnnouncement.TimeAtLocation)}</strong>
+        {/if}
         {#if trainAnnouncement.EstimatedTimeAtLocation}
           <strong class:departured={Boolean(trainAnnouncement.TimeAtLocation)}>
             {dateToHHMM(trainAnnouncement.EstimatedTimeAtLocation)}
@@ -30,9 +34,6 @@
         {trainAnnouncement.TrackAtLocation} #
       </div>
     </div>
-    {#if trainAnnouncement.TimeAtLocation}
-      <strong>Departured: {dateToHHMM(trainAnnouncement.TimeAtLocation)}</strong>
-    {/if}
     <div class="card__transport">
       {trainAnnouncement.ProductInformation?.map((p) => p.Description).join(" ") ?? ""}
       <a
@@ -44,12 +45,14 @@
           trainAnnouncement.AdvertisedTimeAtLocation
         ).toLocaleDateString()}`}>{trainAnnouncement.AdvertisedTrainIdent}</a
       >
-      <button
-        on:click={() => openDetails(trainAnnouncement)}
-        aria-label="Show details"
-      >
-        <InfoIcon />
-      </button>
+      {#if hasExtraInfo(trainAnnouncement)}
+        <button
+          on:click={() => openDetails(trainAnnouncement)}
+          aria-label="Show details"
+        >
+          <InfoIcon />
+        </button> 
+      {/if}
     </div>
     {#if trainAnnouncement.Deviation?.length}
       <span class="card__deviation"

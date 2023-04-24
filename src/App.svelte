@@ -101,19 +101,19 @@
   {#if selectedTrainAnnouncement}
     <div>
       <p>
-        {selectedTrainAnnouncement.OtherInformation?.map((p) => p.Description).join("") ?? ""}
+        {selectedTrainAnnouncement.OtherInformation?.map((p) => p.Description).join("\n") ?? ""}
       </p>
       <p>
-        {selectedTrainAnnouncement.Deviation?.map((p) => p.Description).join("") ?? ""}
+        {selectedTrainAnnouncement.Deviation?.map((p) => p.Description).join("\n") ?? ""}
       </p>
       <p>
-        {selectedTrainAnnouncement.Booking?.map((p) => p.Description).join("") ?? ""}
+        {selectedTrainAnnouncement.Booking?.map((p) => p.Description).join("\n") ?? ""}
       </p>
       <p>
-        {selectedTrainAnnouncement.Service?.map((p) => p.Description).join("") ?? ""}
+        {selectedTrainAnnouncement.Service?.map((p) => p.Description).join("\n") ?? ""}
       </p>
       <p>
-        {selectedTrainAnnouncement.TrainComposition?.map((p) => p.Description).join("") ?? ""}
+        {selectedTrainAnnouncement.TrainComposition?.map((p) => p.Description).join("\n") ?? ""}
       </p>
     </div>
   {/if}

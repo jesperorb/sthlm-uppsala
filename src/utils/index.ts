@@ -16,10 +16,17 @@ export const sortByDate = (trainAnnouncements: TrainAnnouncement[]) => {
 }
 
 export const isMovingo = (trainAnnouncement: TrainAnnouncement) => {
-  return trainAnnouncement.OtherInformation?.some((p) =>
-    p.Description !== "Endast SJ-biljetter gäller."
-  )
+  return !trainAnnouncement.ProductInformation.some(p => p.Description.includes("InterCity"))
 }
+
+export const hasExtraInfo = (trainAnnouncement: TrainAnnouncement) => Boolean(
+  trainAnnouncement.OtherInformation?.length ||
+  trainAnnouncement.Deviation?.length ||
+  trainAnnouncement.Booking?.length ||
+  trainAnnouncement.Service?.length ||
+  trainAnnouncement.TrainComposition?.length
+)
+
 
 export const filterDeviations = (meta: MetaInformation[]) => {
   const unecessaryDeviations = [
@@ -46,3 +53,20 @@ export const getDefaultToTime = (fromTime: string): Date => {
   endOfDay.setHours(endOfDay.getHours() + 3);
   return endOfDay;
 };
+
+type ObjectKey = string | number | symbol
+
+export const groupBy = <
+  K extends ObjectKey,
+  TItem extends Record<K, ObjectKey>
+>(
+  items: TItem[],
+  key: K
+): Record<ObjectKey, TItem[]> =>
+  items.reduce(
+    (result, item) => ({
+      ...result,
+      [item[key]]: [...(result[item[key]] || []), item],
+    }),
+    {} as Record<ObjectKey, TItem[]>
+  )
