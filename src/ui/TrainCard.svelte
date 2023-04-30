@@ -1,10 +1,13 @@
 <script lang="ts">
   import { layout } from "../store";
   import type { TrainAnnouncement } from "../api/TrainAnnouncement";
-  import { dateToHHMM, filterDeviations, hasExtraInfo } from "../utils";
+  import { dateToHHMM, filterDeviations, formatMetaInfo, hasExtraInfo } from "../utils";
   import InfoIcon from "./InfoIcon.svelte";
+    import Sj from "./SJ.svelte";
+    import Malartag from "./Malartag.svelte";
   export let trainAnnouncement: TrainAnnouncement;
   export let openDetails: (ta: TrainAnnouncement) => void;
+  const meta = formatMetaInfo(trainAnnouncement, "ProductInformation");
 </script>
 
 <li>
@@ -37,7 +40,13 @@
       </div>
     </div>
     <div class="card__transport">
-      {trainAnnouncement.ProductInformation?.map((p) => p.Description).join(" ") ?? ""}
+      {#if meta.includes("SJ")}
+        <Sj />
+      {/if}
+      {#if meta.includes("Mälartåg")}
+        <Malartag />
+      {/if}
+      {formatMetaInfo(trainAnnouncement, "ProductInformation")}
       <a
         target="_blank"
         rel="noopener noreferrer"
