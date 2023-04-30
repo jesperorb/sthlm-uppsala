@@ -1,6 +1,6 @@
 import type { MetaInfoKeys, TrainAnnouncement } from "./TrainAnnouncement";
 
-export const trainAnnouncementModel: Required<TrainAnnouncement> = {
+export const trainAnnouncementModel: Required<Omit<TrainAnnouncement, "ArrivalTime">> = {
   LocationSignature: "",
   FromLocation: [],
   ViaFromLocation: [],
@@ -22,6 +22,7 @@ export const trainAnnouncementModel: Required<TrainAnnouncement> = {
   Booking: [],
   Service: [],
   TrainComposition: [],
+  ActivityType: "Avgang",
 }
 
 export const trainAnnouncementIncludeKeys =

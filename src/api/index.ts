@@ -1,3 +1,4 @@
+import { groupBy } from "../utils";
 import type { ApiResponse } from "./ApiResponse";
 import type { TrainAnnouncement } from "./TrainAnnouncement";
 import { trainAnnouncementIncludeKeys } from "./trainAnnouncementModel";
@@ -15,14 +16,6 @@ const timeFilter = (fromTime: string, toTime: string): string => {
       <GT name='AdvertisedTimeAtLocation' value='${fromTime}'/>
       <LT name='AdvertisedTimeAtLocation' value='${toTime}'/>
     </AND>
-  `;
-}
-
-const trainIdFilter = (trainIds: Set<string>): string => {
-  return `
-    <OR>
-      ${Array.from(trainIds).map(id => `<EQ name='AdvertisedTrainIdent' value='${id}' />`).join("\n")}
-    </OR>
   `;
 }
 
@@ -95,30 +88,27 @@ export const fetchTrafikInfo = async ({
   fromTime,
   toTime,
 }: FetchTrafikInfoConfig) => {
-
-  // Some train announcements don't include all the "via from" and "via to" stations
-  // so we need to fetch all announcements for the time period and look for the
-  // ones that include both stations in some valid arrangement. And then we can
-  // use the train IDs to get the departures we are actually interested in.
-
   const allAnnouncements = await fetchAnnouncements([
+    `<EQ name='Advertised' value='true' />`,
     timeFilter(fromTime, toTime),
     stationFilter(departureLocation, arrivalLocation),
   ]);
 
-  const advertisedTrainAnnouncements = allAnnouncements
-    .filter(ta => !ta.ProductInformation?.some(pi => pi.Description === "Museitåg"));
+  const announcements =  Object.entries(groupBy(allAnnouncements, "AdvertisedTrainIdent")).map(([, value]) => {
+    if(value.length === 1) {
+      return value
+      .find(v => v.LocationSignature === departureLocation && v.ActivityType === "Avgang");
+    }
+    const departureEntry = value
+      .find(v => v.LocationSignature === departureLocation && v.ActivityType === "Avgang");
+    const arrivalEntry = value
+      .find(v => v.LocationSignature === arrivalLocation && v.ActivityType === "Ankomst");
 
-  const trainIDs = new Set(advertisedTrainAnnouncements.map(ta => ta.AdvertisedTrainIdent));
+    return {
+      ...departureEntry,
+      ArrivalTime: arrivalEntry.AdvertisedTimeAtLocation,
+    } as TrainAnnouncement
+  })
 
-  // Now we can fetch all the departures for the relevant train IDs from the given station.
-  const filteredAnnouncements = await fetchAnnouncements([
-    `<EQ name='ActivityType' value='Avgang' />`,
-    `<EQ name='LocationSignature' value='${departureLocation}' />`,
-    `<EQ name='Advertised' value='true' />`,
-    timeFilter(fromTime, toTime),
-    trainIdFilter(trainIDs),
-  ]);
-
-  return filteredAnnouncements;
+  return announcements.filter(Boolean);
 }

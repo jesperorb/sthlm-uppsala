@@ -16,12 +16,14 @@
           class:departured={Boolean(trainAnnouncement.TimeAtLocation)}
           aria-hidden={Boolean(trainAnnouncement.TimeAtLocation)}
         >
-          {dateToHHMM(trainAnnouncement.AdvertisedTimeAtLocation)}
+          {dateToHHMM(trainAnnouncement.AdvertisedTimeAtLocation)}{#if trainAnnouncement.ArrivalTime && !Boolean(trainAnnouncement.EstimatedTimeAtLocation) && !Boolean(trainAnnouncement.TimeAtLocation)}
+          {" "}–{" "}{dateToHHMM(trainAnnouncement.ArrivalTime)}
+          {/if}
         </strong>
         {#if trainAnnouncement.TimeAtLocation}
           <strong>dep. {dateToHHMM(trainAnnouncement.TimeAtLocation)}</strong>
         {/if}
-        {#if trainAnnouncement.EstimatedTimeAtLocation}
+        {#if trainAnnouncement.EstimatedTimeAtLocation && !Boolean(trainAnnouncement.TimeAtLocation)}
           <strong class:departured={Boolean(trainAnnouncement.TimeAtLocation)}>
             {dateToHHMM(trainAnnouncement.EstimatedTimeAtLocation)}
             {#if trainAnnouncement.EstimatedTimeIsPreliminary}
@@ -68,6 +70,10 @@
   .card--canceled .card__time,
   .card--canceled .card__transport {
     text-decoration: line-through;
+  }
+
+  .card--normal .card__time, .card__track {
+    font-size: 1.25rem;
   }
 
   .delayed {

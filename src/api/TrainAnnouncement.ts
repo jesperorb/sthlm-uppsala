@@ -20,6 +20,8 @@ export type TrainAnnouncement = {
   Deviation?: MetaInformation[];
   OtherInformation?: MetaInformation[];
   TrainComposition: MetaInformation[]
+  ArrivalTime?: string;
+  ActivityType: "Ankomst" | "Avgang";
 }
 
 export type Location = { LocationName: string; Priority: number, Order: number; }

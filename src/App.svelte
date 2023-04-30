@@ -12,8 +12,7 @@
   import TrainCard from "./ui/TrainCard.svelte";
   import Options from "./ui/Options.svelte";
   import Header from "./ui/Header.svelte";
-  import Dialog from "./ui/Dialog.svelte";
-    import TrainDetailsDialog from "./ui/TrainDetailsDialog.svelte";
+  import TrainDetailsDialog from "./ui/TrainDetailsDialog.svelte";
 
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
