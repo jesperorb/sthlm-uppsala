@@ -13,6 +13,7 @@
   import Options from "./ui/Options.svelte";
   import Header from "./ui/Header.svelte";
   import Dialog from "./ui/Dialog.svelte";
+    import TrainDetailsDialog from "./ui/TrainDetailsDialog.svelte";
 
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
@@ -95,29 +96,7 @@
   </ul>
 </main>
 <Options {loading} {refresh} bind:fromTime={fromTime} />
-<Dialog bind:showModal>
-	<h2 slot="header">
-	</h2>
-  {#if selectedTrainAnnouncement}
-    <div>
-      <p>
-        {selectedTrainAnnouncement.OtherInformation?.map((p) => p.Description).join("\n") ?? ""}
-      </p>
-      <p>
-        {selectedTrainAnnouncement.Deviation?.map((p) => p.Description).join("\n") ?? ""}
-      </p>
-      <p>
-        {selectedTrainAnnouncement.Booking?.map((p) => p.Description).join("\n") ?? ""}
-      </p>
-      <p>
-        {selectedTrainAnnouncement.Service?.map((p) => p.Description).join("\n") ?? ""}
-      </p>
-      <p>
-        {selectedTrainAnnouncement.TrainComposition?.map((p) => p.Description).join("\n") ?? ""}
-      </p>
-    </div>
-  {/if}
-</Dialog>
+<TrainDetailsDialog bind:showModal trainAnnouncement={selectedTrainAnnouncement} />
 
 <style global>
   :root {
@@ -181,5 +160,11 @@
   }
   main {
     flex: 1 0 auto;
+  }
+
+  @media (min-width: 50rem) {
+    main {
+      margin: auto;
+    }
   }
 </style>

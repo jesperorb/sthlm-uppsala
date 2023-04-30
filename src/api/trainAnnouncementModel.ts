@@ -1,4 +1,4 @@
-import type { TrainAnnouncement } from "./TrainAnnouncement";
+import type { MetaInfoKeys, TrainAnnouncement } from "./TrainAnnouncement";
 
 export const trainAnnouncementModel: Required<TrainAnnouncement> = {
   LocationSignature: "",
@@ -28,4 +28,12 @@ export const trainAnnouncementIncludeKeys =
   Object.keys(trainAnnouncementModel)
     .map(key => `<INCLUDE>${key}</INCLUDE>`)
     .join("\n")
+
+export const metaInfo: MetaInfoKeys[] = [
+  "Deviation",
+  "OtherInformation",
+  "Booking",
+  "Service",
+  "TrainComposition"
+];
 

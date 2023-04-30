@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onlyMovingo, departureLocation, layout } from "../store";
+  import { slide } from 'svelte/transition'
   import ChangeDirectionIcon from "./ChangeDirectionIcon.svelte";
   import RefreshIcon from "./RefreshIcon.svelte";
   import SettingsIcon from "./SettingsIcon.svelte";
@@ -38,7 +39,8 @@
       <RefreshIcon />
     </button>
   </div>
-  <div class="settings" class:settings--open={showOptions}>
+  {#if showOptions}
+  <div class="settings" transition:slide={{duration: 200}}>
     <label>
       Show only Movingo
       <input type="checkbox" bind:checked={$onlyMovingo} id="toggleMovingo" />
@@ -67,6 +69,7 @@
       <label for="dense">Dense</label>
     </fieldset>
   </div>
+  {/if}
 </footer>
 
 <style>
@@ -114,14 +117,15 @@
 
   .settings {
     flex-direction: column;
-    display: none;
+    display: flex;
     padding: 0.5rem;
     gap: 0.5rem;
   }
   .settings-icon {
     margin-right: auto;
   }
-  .settings--open {
-    display: flex;
+
+  fieldset {
+    border-radius: 8px;
   }
 </style>

@@ -1,4 +1,4 @@
-import type { MetaInformation, TrainAnnouncement } from "../api/TrainAnnouncement"
+import type { MetaInfoKeys, MetaInformation, TrainAnnouncement } from "../api/TrainAnnouncement"
 
 export const dateToHHMM = (date: string) => {
   return new Date(date).toLocaleString([], {
@@ -26,6 +26,13 @@ export const hasExtraInfo = (trainAnnouncement: TrainAnnouncement) => Boolean(
   trainAnnouncement.Service?.length ||
   trainAnnouncement.TrainComposition?.length
 )
+
+export const getDescription = (meta: MetaInformation) => meta.Description;
+
+export const formatMetaInfo = (
+  trainAnnouncement: TrainAnnouncement,
+  key: MetaInfoKeys
+): string =>  trainAnnouncement[key]?.map(getDescription).join("\n") ?? "";
 
 
 export const filterDeviations = (meta: MetaInformation[]) => {
