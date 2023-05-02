@@ -7,7 +7,6 @@
     import Malartag from "./Malartag.svelte";
   export let trainAnnouncement: TrainAnnouncement;
   export let openDetails: (ta: TrainAnnouncement) => void;
-  let meta = formatMetaInfo(trainAnnouncement, "ProductInformation");
 </script>
 
 <li>
@@ -40,13 +39,13 @@
       </div>
     </div>
     <div class="card__transport">
-      {#if meta.includes("SJ")}
+      {#if formatMetaInfo(trainAnnouncement, "ProductInformation").includes("SJ")}
         <Sj />
       {/if}
-      {#if meta.includes("Mälartåg")}
+      {#if formatMetaInfo(trainAnnouncement, "ProductInformation").includes("Mälartåg")}
         <Malartag />
       {/if}
-      {meta}
+      {formatMetaInfo(trainAnnouncement, "ProductInformation")}
       <a
         target="_blank"
         rel="noopener noreferrer"
