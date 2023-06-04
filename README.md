@@ -16,7 +16,7 @@
 
 ## Screenshot
 
-<img width="357" alt="Screenshot 2023-03-26 at 15 18 59" src="https://user-images.githubusercontent.com/21122051/227778343-b30070d1-cd45-497f-9c65-c26b281c9f5d.png">
+![Video recording of the Website Sthlm-Uppsala](https://github.com/jesperorb/sthlm-uppsala/assets/21122051/dfe47110-366c-4aeb-8ee8-1c88105a1e68)
 
 ## Running
 
