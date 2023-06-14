@@ -28,8 +28,9 @@ const stationFilter = (fromStation: string, toStation: string): string => {
       <EQ name='LocationSignature' value='${fromStation}' />
       <EQ name='ActivityType' value='Avgang' />
       <OR>
-        <EQ name='ToLocation.LocationName' value='${toStation}' />
+        <EQ name='FromLocation.LocationName' value='${fromStation}' />
         <EQ name='ViaToLocation.LocationName' value='${toStation}' />
+        <EQ name='ToLocation.LocationName' value='${toStation}' />
       </OR>
     </AND>
   `;
@@ -41,6 +42,7 @@ const stationFilter = (fromStation: string, toStation: string): string => {
       <OR>
         <EQ name='FromLocation.LocationName' value='${fromStation}' />
         <EQ name='ViaFromLocation.LocationName' value='${fromStation}' />
+        <EQ name='ToLocation.LocationName' value='${toStation}' />
       </OR>
     </AND>
   `;
@@ -96,8 +98,7 @@ export const fetchTrafikInfo = async ({
 
   const announcements =  Object.entries(groupBy(allAnnouncements, "AdvertisedTrainIdent")).map(([, value]) => {
     if(value.length === 1) {
-      return value
-      .find(v => v.LocationSignature === departureLocation && v.ActivityType === "Avgang");
+      return undefined;
     }
     const departureEntry = value
       .find(v => v.LocationSignature === departureLocation && v.ActivityType === "Avgang");
