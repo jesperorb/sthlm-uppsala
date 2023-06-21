@@ -49,7 +49,7 @@
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={`https://trafikinfo.sj.se/sv/tag/${
+        href={`https://www.sj.se/trafikinformation/tag/${
           trainAnnouncement.AdvertisedTrainIdent
         }?date=${new Date(
           trainAnnouncement.AdvertisedTimeAtLocation
