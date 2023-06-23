@@ -43,15 +43,15 @@ export const filterDeviations = (meta: MetaInformation[]) => {
   return meta.filter((p) => !unecessaryDeviations.includes(p.Description))
 }
 
-export const getDefaultFromTime = (): Date => {
+export const getDefaultFromTime = (showDeparturedFromNow: number = 15): Date => {
   const nowInMinutes = new Date().getMinutes();
   const from = new Date();
-  from.setMinutes(nowInMinutes - 30);
+  from.setMinutes(nowInMinutes - showDeparturedFromNow);
   return from;
 };
 
-export const getDefaultFromTimeForDatePicker = () => {
-  const fromTime = getDefaultFromTime();
+export const getDefaultFromTimeForDatePicker = (showDeparturedFromNow: number) => {
+  const fromTime = getDefaultFromTime(showDeparturedFromNow);
   return `${fromTime.toLocaleDateString()}T${fromTime.toLocaleTimeString()}`;
 };
 

@@ -25,3 +25,11 @@ const storedLayout = localStorage.getItem(layoutKey) ?? "normal";
 export const layout = writable<string>(storedLayout);
 
 layout.subscribe((value) => localStorage.setItem(layoutKey, value));
+
+const showDeparturedFromNowKey = "showDeparturedFromNow";
+
+const storedShowDeparturedFromNow = localStorage.getItem(showDeparturedFromNowKey) ?? "15";
+
+export const showDeparturedFromNow = writable<string>(storedShowDeparturedFromNow);
+
+showDeparturedFromNow.subscribe((value) => localStorage.setItem(showDeparturedFromNowKey, value));

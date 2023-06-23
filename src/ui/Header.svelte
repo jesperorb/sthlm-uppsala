@@ -12,7 +12,7 @@
     {locationToName[departureLocation]} → {locationToName[arrivalLocation]}
   </h1>
   <p>
-    {new Intl.DateTimeFormat().format(new Date(fromTime))}
+    From: {new Date(fromTime).toLocaleString(undefined, { dateStyle: "short", timeStyle: "short" })}
   </p>
 </header>
 

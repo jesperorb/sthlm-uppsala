@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onlyMovingo, departureLocation, layout } from "../store";
+  import { onlyMovingo, departureLocation, layout, showDeparturedFromNow } from "../store";
   import { slide } from 'svelte/transition'
   import ChangeDirectionIcon from "./ChangeDirectionIcon.svelte";
   import RefreshIcon from "./RefreshIcon.svelte";
@@ -48,6 +48,18 @@
     <label>
       <span>From time</span>
       <input type="datetime-local" step="1" bind:value={fromTime} />
+    </label>
+    <label>
+      Show departured from now:
+      <select bind:value={$showDeparturedFromNow} name="showDepartured" id="showDepartured">
+        <option value="0">0 min</option>
+        <option value="5">5 min</option>
+        <option value="10">10 min</option>
+        <option value="15">15 min</option>
+        <option value="20">20 min</option>
+        <option value="25">25 min</option>
+        <option value="30">30 min</option>
+      </select>
     </label>
     <fieldset>
       <legend>Layout:</legend>

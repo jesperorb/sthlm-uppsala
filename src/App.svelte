@@ -6,7 +6,7 @@
     isMovingo,
     sortByDate,
   } from "./utils";
-  import { departureLocation, onlyMovingo } from "./store";
+  import { departureLocation, onlyMovingo, showDeparturedFromNow } from "./store";
   import type { TrainAnnouncement } from "./api/TrainAnnouncement";
   import LoadingIcon from "./ui/LoadingIcon.svelte";
   import TrainCard from "./ui/TrainCard.svelte";
@@ -16,9 +16,9 @@
 
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
-  let fromTime = getDefaultFromTimeForDatePicker();
   let showModal = false;
   let selectedTrainAnnouncement: TrainAnnouncement | null = null;
+  $: fromTime = getDefaultFromTimeForDatePicker(parseInt($showDeparturedFromNow, 10));
   $: arrivalLocation = $departureLocation === "Cst" ? "U" : "Cst";
 
   $: filteredTrainAnnouncements = $onlyMovingo
@@ -74,7 +74,7 @@
 
   window.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
-      fromTime = getDefaultFromTimeForDatePicker();
+      fromTime = getDefaultFromTimeForDatePicker(parseInt($showDeparturedFromNow, 10));
     }
   });
 </script>
