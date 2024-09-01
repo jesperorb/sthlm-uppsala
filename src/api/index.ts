@@ -89,7 +89,7 @@ export const fetchTrafikInfo = async ({
   arrivalLocation,
   fromTime,
   toTime,
-}: FetchTrafikInfoConfig) => {
+}: FetchTrafikInfoConfig): Promise<TrainAnnouncement[]> => {
   const allAnnouncements = await fetchAnnouncements([
     `<EQ name='Advertised' value='true' />`,
     timeFilter(fromTime, toTime),
@@ -107,9 +107,9 @@ export const fetchTrafikInfo = async ({
 
     return {
       ...departureEntry,
-      ArrivalTime: arrivalEntry.AdvertisedTimeAtLocation,
+      ArrivalTime: arrivalEntry?.AdvertisedTimeAtLocation,
     } as TrainAnnouncement
   })
 
-  return announcements.filter(Boolean);
+  return announcements.filter(Boolean) as TrainAnnouncement[];
 }

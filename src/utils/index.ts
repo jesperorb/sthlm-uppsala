@@ -16,7 +16,7 @@ export const sortByDate = (trainAnnouncements: TrainAnnouncement[]) => {
 }
 
 export const isMovingo = (trainAnnouncement: TrainAnnouncement) => {
-  return !trainAnnouncement.ProductInformation.some(p => p.Description.includes("InterCity"))
+  return !Boolean(trainAnnouncement.ProductInformation?.some(p => p.Description.includes("InterCity")))
 }
 
 export const hasExtraInfo = (trainAnnouncement: TrainAnnouncement) => Boolean(
@@ -52,7 +52,7 @@ export const getDefaultFromTime = (showDeparturedFromNow: number = 15): Date => 
 
 export const getDefaultFromTimeForDatePicker = (showDeparturedFromNow: number) => {
   const fromTime = getDefaultFromTime(showDeparturedFromNow);
-  return `${fromTime.toLocaleDateString()}T${fromTime.toLocaleTimeString()}`;
+  return `${fromTime.toLocaleDateString("sv-SE")}T${fromTime.toLocaleTimeString("sv-SE")}`;
 };
 
 export const getDefaultToTime = (fromTime: string): Date => {

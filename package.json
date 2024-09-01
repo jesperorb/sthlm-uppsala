@@ -11,15 +11,15 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.0.3",
-    "@tsconfig/svelte": "^3.0.0",
-    "msw": "^1.1.0",
-    "svelte": "^3.55.1",
-    "svelte-check": "^3.0.4",
-    "svelte-preprocess": "^5.0.1",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.4"
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@tsconfig/svelte": "^5.0.4",
+    "msw": "^2.4.1",
+    "svelte": "^4.2.19",
+    "svelte-check": "^3.8.6",
+    "svelte-preprocess": "^6.0.2",
+    "tslib": "^2.7.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
   },
   "msw": {
     "workerDirectory": "public"

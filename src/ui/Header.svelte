@@ -1,9 +1,9 @@
 <script lang="ts">
   import { layout } from "../store";
-  import { locationToName } from "../api/Location";
+  import { locationToName, type Locations } from "../api/Location";
 
-  export let departureLocation: string;
-  export let arrivalLocation: string;
+  export let departureLocation: Locations;
+  export let arrivalLocation: Locations;
   export let fromTime: string;
 </script>
 

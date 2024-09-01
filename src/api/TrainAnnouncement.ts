@@ -8,6 +8,7 @@ export type TrainAnnouncement = {
   AdvertisedTimeAtLocation: string;
   EstimatedTimeAtLocation?: string;
   AdvertisedTrainIdent: string;
+  TechnicalTrainIdent: string;
   OperationalTrainNumber: string;
   ProductInformation?: MetaInformation[];
   Canceled: boolean;

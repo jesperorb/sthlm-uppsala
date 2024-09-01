@@ -3,8 +3,8 @@
   import type { TrainAnnouncement } from "../api/TrainAnnouncement";
   import { dateToHHMM, filterDeviations, formatMetaInfo, hasExtraInfo } from "../utils";
   import InfoIcon from "./InfoIcon.svelte";
-    import Sj from "./SJ.svelte";
-    import Malartag from "./Malartag.svelte";
+  import Sj from "./SJ.svelte";
+  import Malartag from "./Malartag.svelte";
   export let trainAnnouncement: TrainAnnouncement;
   export let openDetails: (ta: TrainAnnouncement) => void;
 </script>

@@ -5,7 +5,7 @@
   import { metaInfo } from "../api/trainAnnouncementModel";
 
   export let showModal: boolean;
-  export let trainAnnouncement: TrainAnnouncement | undefined;
+  export let trainAnnouncement: TrainAnnouncement | undefined | null;
 </script>
 
 <Dialog {showModal}>

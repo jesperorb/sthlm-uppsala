@@ -23,6 +23,7 @@ export const trainAnnouncementModel: Required<Omit<TrainAnnouncement, "ArrivalTi
   Service: [],
   TrainComposition: [],
   ActivityType: "Avgang",
+  TechnicalTrainIdent: ""
 }
 
 export const trainAnnouncementIncludeKeys =

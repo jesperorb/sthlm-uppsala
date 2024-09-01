@@ -13,13 +13,14 @@
   import Options from "./ui/Options.svelte";
   import Header from "./ui/Header.svelte";
   import TrainDetailsDialog from "./ui/TrainDetailsDialog.svelte";
+  import type{ Locations } from "./api/Location";
 
   let trainAnnouncements: TrainAnnouncement[] = [];
   let loading = false;
   let showModal = false;
   let selectedTrainAnnouncement: TrainAnnouncement | null = null;
   $: fromTime = getDefaultFromTimeForDatePicker(parseInt($showDeparturedFromNow, 10));
-  $: arrivalLocation = $departureLocation === "Cst" ? "U" : "Cst";
+  $: arrivalLocation = $departureLocation === "Cst" ? "U" as Locations : "Cst" as Locations;
 
   $: filteredTrainAnnouncements = $onlyMovingo
     ? sortByDate(trainAnnouncements.filter(isMovingo))
